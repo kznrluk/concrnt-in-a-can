@@ -1,0 +1,19 @@
+services:
+  - name: concrnt
+    host: api
+    port: 8000
+    path: /api/v1
+    injectCors: true
+  - name: webui
+    host: webui
+    port: 80
+    path: /web
+    preservePath: true
+  - name: url-summary
+    host: summary
+    port: 8080
+    path: /summary
+  - name: mediaserver
+    host: mediaserver
+    port: 8000
+    path: /storage

@@ -1,0 +1,30 @@
+server:
+  dsn: "host=db user=postgres password=postgres dbname=concurrent port=5432 sslmode=disable"
+  redisAddr: "redis:6379"
+  redisDB: 0
+  memcachedAddr: "memcached:11211"
+  traceEndpoint: "tempo:4318"
+  enableTrace: true
+  repositoryPath: "/var/lib/concurrent"
+  # registration: openにする場合は必ず下記のキャプチャキーを正しいもの変更してください
+  captchaSitekey: "6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"
+  captchaSecret: "6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe"
+
+concrnt:
+  # ドメインの設定 この設定を後から変えるのは非常に困難でお勧めしません
+  fqdn: example.com
+  # アカウント作成 'open' or 'invite' or 'close'
+  registration: open
+  # ネットワーク 'concrnt-devnet' or 'concrnt-mainnet'
+  dimension: concrnt-mainnet
+  # サーバーエージェントアカウント この情報はconcurrent.worldのdevtoolで生成すると便利です
+  privatekey: YOUR_PRIVATE_KEY
+
+profile:
+  nickname: "my concrnt domain"
+  description: 'わたしのコンカレントドメインです'
+  logo: 'https://your_image_url/media/cclogo.png'
+  wordmark: ''
+  themeColor: '#0476d9'
+  maintainerName: your_name
+  maintainerEmail: your_email@example.com

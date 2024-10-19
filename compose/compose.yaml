@@ -1,0 +1,101 @@
+services:
+  cloudflared:
+    image: cloudflare/cloudflared:latest
+    restart: always
+    command:
+      - 'tunnel'
+      - 'run'
+      - '--token'
+      - 'YOUR_TOKEN_HERE'
+
+  minio:
+    image: quay.io/minio/minio:latest
+    restart: always
+    command:
+      - server
+      - /data
+      - '--console-address'
+      - ":9001"
+    volumes:
+      - ./_composeData/minio:/data
+    environment:
+      MINIO_ROOT_USER: kznrluk # change this to your username
+      MINIO_ROOT_PASSWORD: YOUR_VERY_SECURE_PASSWORD
+      MINIO_DOMAIN: a3.anyfrog.net # change this to your domain
+
+  gateway:
+    image: ghcr.io/totegamma/ccgateway:latest
+    restart: always
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    volumes:
+      - ./etc:/etc/concrnt/:ro
+
+  api:
+    image: ghcr.io/totegamma/ccapi:latest
+    restart: always
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    volumes:
+      - ./etc:/etc/concrnt/:ro
+
+  mediaserver:
+    image: ghcr.io/totegamma/cc-media-server:latest
+    restart: always
+    links:
+      - db
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      bucketName: ccmedia
+      endpointUrl: http://minio:9000
+      accessKeyId: YOUR_ACCESS_KEY
+      accessKeySecret: YOUR_SECRET_KEY
+      publicBaseUrl: https://a3.anyfrog.net/ccmedia/ # change this to your domain and path
+      forcePathStyle: true
+      quota: 1000000 # bytes
+      db_dsn: "host=db user=postgres password=postgres dbname=concurrent port=5432 sslmode=disable"
+
+  webui:
+    image: ghcr.io/totegamma/ccwebui:latest
+    restart: always
+
+  summary:
+    image: ghcr.io/rassi0429/url-summary:latest
+    restart: always
+    environment:
+      - PORT=8080
+
+  db:
+    restart: always
+    image: postgres:16-bookworm
+    healthcheck:
+      test: "pg_isready -U postgres"
+      interval: 5s
+      retries: 20
+    volumes:
+      - ./_composeData/db:/var/lib/postgresql/data
+    environment:
+      - "POSTGRES_PASSWORD=postgres"
+      - "POSTGRES_DB=concurrent"
+
+  redis:
+    restart: always
+    image: redis:7-bookworm
+    volumes:
+      - ./_composeData/redis:/data
+    healthcheck:
+      test: "redis-cli ping"
+      interval: 5s
+      retries: 20
+
+  memcached:
+    restart: always
+    image: memcached:1.6-bookworm
