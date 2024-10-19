@@ -4,7 +4,7 @@ server:
   redisDB: 0
   memcachedAddr: "memcached:11211"
   traceEndpoint: "tempo:4318"
-  enableTrace: true
+  enableTrace: false
   repositoryPath: "/var/lib/concurrent"
   # registration: openにする場合は必ず下記のキャプチャキーを正しいもの変更してください
   captchaSitekey: "6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"
