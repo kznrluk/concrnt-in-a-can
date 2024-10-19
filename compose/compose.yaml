@@ -56,11 +56,11 @@ services:
     environment:
       bucketName: ccmedia
       endpointUrl: http://minio:9000
-      accessKeyId: YOUR_ACCESS_KEY
-      accessKeySecret: YOUR_SECRET_KEY
+      accessKeyId: SAME_AS_MINIO_ROOT_USER
+      accessKeySecret: SAME_AS_MINIO_ROOT_PASSWORD
       publicBaseUrl: https://a3.anyfrog.net/ccmedia/ # change this to your domain and path
       forcePathStyle: true
-      quota: 1000000 # bytes
+      quota: 10000000 # bytes -> 10GB
       db_dsn: "host=db user=postgres password=postgres dbname=concurrent port=5432 sslmode=disable"
 
   webui:
