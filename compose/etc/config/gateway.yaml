@@ -157,13 +157,11 @@ services:
     port: 8000
     path: /summary
     preservePath: true
-    injectCors: true
   - name: world.concrnt.hyperproxy.image
     host: hyperproxy
     port: 8000
     path: /image
     preservePath: true
-    injectCors: true
   - name: world.concrnt.mediaserver
     host: mediaserver
     port: 8000
