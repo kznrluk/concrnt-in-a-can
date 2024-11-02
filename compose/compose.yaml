@@ -67,11 +67,12 @@ services:
     image: ghcr.io/totegamma/ccwebui:latest
     restart: always
 
-  summary:
-    image: ghcr.io/rassi0429/url-summary:latest
+  hyperproxy:
+    image: ghcr.io/concrnt/hyperproxy:latest
     restart: always
     environment:
-      - PORT=8080
+      - PORT=8000
+      - MEMCACHED_HOST=memcached:11211
 
   db:
     restart: always
